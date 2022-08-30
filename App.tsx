@@ -21,13 +21,7 @@ import {
   View,
 } from 'react-native';
 
-import {
-  Colors,
-  DebugInstructions,
-  Header,
-  LearnMoreLinks,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
+import {Colors} from 'react-native/Libraries/NewAppScreen';
 import ConcertCard, {IConcertCard} from './Components/ConcertCard';
 
 const example: IConcertCard = {
@@ -35,7 +29,7 @@ const example: IConcertCard = {
   country: 'País',
   city: 'Cidade',
   date: new Date(),
-  ticket: {value: 20.01},
+  ticket: {value: 20.01, type: 'Platinum'},
 };
 
 const App = () => {

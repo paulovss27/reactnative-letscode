@@ -1,9 +1,13 @@
-import {View, Text, StyleSheet} from 'react-native';
+import {View, Text, StyleSheet, Touchable, TouchableOpacity} from 'react-native';
 import React from 'react';
+import Button from './Button';
 
-type Ticket = {
+export type Ticket = {
+  type: 'Standard' | 'Vip' | 'Platinum';
   value: number;
 };
+
+type TicketSimulation = Ticket & {amount: number};
 
 export interface IConcertCard {
   bandName: string;
@@ -26,6 +30,7 @@ export default function ConcertCard({
   index,
 }: ConcertCardProps) {
   return (
+    <View style={{display:'flex', flexDirection:'row', alignItems:'center'}}>
     <View style={styles(index).container}>
       <View style={styles(index).subContainer}>
         <Text style={[styles(index).text, {color: '#1B263B'}]}>{bandName}</Text>
@@ -41,6 +46,12 @@ export default function ConcertCard({
         R${' ' + ticket.value.toString().replace('.', ',')}
       </Text>
     </View>
+    <View>
+    {['Standard', 'Vip', 'Platinum'].map(string => (
+      <Button type={string} />
+    ))}
+  </View>
+  </View>
   );
 }
 
