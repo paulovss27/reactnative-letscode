@@ -28,16 +28,8 @@ import {
   LearnMoreLinks,
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
-import PetClipping from './Components/PetClipping';
-import ConcertCard, {IConcertCard} from './Components/PetClipping';
+import ColorDot from './Components/ColorDot';
 
-const example: IConcertCard = {
-  bandName: 'Nome da Banda',
-  country: 'País',
-  city: 'Cidade',
-  date: new Date(),
-  ticket: {value: 20.01},
-};
 
 const App = () => {
   const isDarkMode = useColorScheme() === 'dark';
@@ -47,7 +39,7 @@ const App = () => {
   return (
     <SafeAreaView style={backgroundStyle}>
       <View>
-        <PetClipping />
+        <ColorDot />
       </View>
     </SafeAreaView>
   );
