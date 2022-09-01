@@ -28,7 +28,8 @@ import {
   LearnMoreLinks,
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
-import ConcertCard, {IConcertCard} from './Components/ConcertCard';
+import PetClipping from './Components/PetClipping';
+import ConcertCard, {IConcertCard} from './Components/PetClipping';
 
 const example: IConcertCard = {
   bandName: 'Nome da Banda',
@@ -43,25 +44,11 @@ const App = () => {
   const backgroundStyle = {
     backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
   };
-  const [list, setList] = useState([example, example, example, example]);
-
   return (
     <SafeAreaView style={backgroundStyle}>
-      <FlatList
-        contentContainerStyle={{
-          alignItems: 'center',
-          width: '100%',
-          borderColor: 'blue',
-          borderWidth: 1,
-        }}
-        data={list}
-        renderItem={({item, index}) => (
-          <ConcertCard
-            {...item}
-            index={index === 0 || index === list.length - 1}
-          />
-        )}
-      />
+      <View>
+        <PetClipping />
+      </View>
     </SafeAreaView>
   );
 };
