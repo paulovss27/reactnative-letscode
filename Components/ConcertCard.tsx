@@ -1,4 +1,11 @@
-import {View, Text, StyleSheet, Touchable, TouchableOpacity} from 'react-native';
+/* eslint-disable react-native/no-inline-styles */
+import {
+  View,
+  Text,
+  StyleSheet,
+  Touchable,
+  TouchableOpacity,
+} from 'react-native';
 import React from 'react';
 import Button from './Button';
 
@@ -7,7 +14,7 @@ export type Ticket = {
   value: number;
 };
 
-type TicketSimulation = Ticket & {amount: number};
+export type TicketSimulation = Ticket & {amount: number};
 
 export interface IConcertCard {
   bandName: string;
@@ -15,6 +22,14 @@ export interface IConcertCard {
   city: string;
   date: Date;
   ticket: Ticket;
+}
+
+export interface IConcertCardSimulation {
+  bandName: string;
+  country: string;
+  city: string;
+  date: Date;
+  ticket: TicketSimulation;
 }
 
 export interface ConcertCardProps extends IConcertCard {
@@ -29,29 +44,39 @@ export default function ConcertCard({
   ticket,
   index,
 }: ConcertCardProps) {
+  const valores = [ticket.value, ticket.value * 1.5, ticket.value * 2];
+  const strings = valores.map(value =>
+    value.toFixed(2).toString().replace('.', ','),
+  );
   return (
-    <View style={{display:'flex', flexDirection:'row', alignItems:'center'}}>
-    <View style={styles(index).container}>
-      <View style={styles(index).subContainer}>
-        <Text style={[styles(index).text, {color: '#1B263B'}]}>{bandName}</Text>
+    <View style={{display: 'flex', flexDirection: 'row', alignItems: 'center'}}>
+      <View style={styles(index).container}>
+        <View style={styles(index).subContainer}>
+          <Text style={[styles(index).text, {color: '#1B263B'}]}>
+            {bandName}
+          </Text>
+        </View>
+        <View>
+          <Text style={styles(index).text}>{country}</Text>
+        </View>
+        <Text style={styles(index).text}>{city}</Text>
+        <Text style={styles(index).text}>
+          {date.toISOString().substring(0, 10).split('-').reverse().join('/')}
+        </Text>
+        <View style={{flexDirection: 'row', justifyContent: 'space-evenly'}}>
+          <Text style={[styles(index).text]}>R${' ' + strings[0]}</Text>
+          <Text>-</Text>
+          <Text style={styles(index).text}>R${' ' + strings[1]}</Text>
+          <Text>-</Text>
+          <Text style={styles(index).text}>R${' ' + strings[2]}</Text>
+        </View>
       </View>
-      <View>
-        <Text style={styles(index).text}>{country}</Text>
+      <View style={{marginTop: 20, marginLeft: 10}}>
+        {['Standard', 'Vip', 'Platinum'].map(string => (
+          <Button type={string} />
+        ))}
       </View>
-      <Text style={styles(index).text}>{city}</Text>
-      <Text style={styles(index).text}>
-        {date.toISOString().substring(0, 10).split('-').reverse().join('/')}
-      </Text>
-      <Text style={styles(index).text}>
-        R${' ' + ticket.value.toString().replace('.', ',')}
-      </Text>
     </View>
-    <View>
-    {['Standard', 'Vip', 'Platinum'].map(string => (
-      <Button type={string} />
-    ))}
-  </View>
-  </View>
   );
 }
 
@@ -83,5 +108,6 @@ const styles = (boo: boolean) =>
       color: '#083D77',
       fontFamily: 'sans-serif-condensed',
       textAlign: 'center',
+      paddingHorizontal: 4,
     },
   });

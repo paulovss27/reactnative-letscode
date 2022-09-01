@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable react-native/no-inline-styles */
 /**
  * Sample React Native App
@@ -11,6 +12,7 @@
 
 import React, {useState, type PropsWithChildren} from 'react';
 import {
+  ActivityIndicator,
   FlatList,
   SafeAreaView,
   ScrollView,
@@ -22,7 +24,7 @@ import {
 } from 'react-native';
 
 import {Colors} from 'react-native/Libraries/NewAppScreen';
-import ConcertCard, {IConcertCard} from './Components/ConcertCard';
+import ConcertCard, {IConcertCard, IConcertCardSimulation, TicketSimulation} from './Components/ConcertCard';
 
 const example: IConcertCard = {
   bandName: 'Nome da Banda',
@@ -32,15 +34,26 @@ const example: IConcertCard = {
   ticket: {value: 20.01, type: 'Platinum'},
 };
 
+const example2: IConcertCardSimulation = {
+  bandName: 'Nome da Banda',
+  country: 'País',
+  city: 'Cidade',
+  date: new Date(),
+  ticket: {value: 20.01, type: 'Platinum', amount: 0},
+};
+
+const ticketSimulation: IConcertCardSimulation[] = [example2];
+
 const App = () => {
   const isDarkMode = useColorScheme() === 'dark';
   const backgroundStyle = {
     backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
   };
-  const [list, setList] = useState([example, example, example, example]);
+  const [list, setList] = useState([example, example, example]);
 
   return (
     <SafeAreaView style={backgroundStyle}>
+      <Text style={styles.text}>Ingressos Disponíveis</Text>
       <FlatList
         contentContainerStyle={{
           alignItems: 'center',
@@ -56,6 +69,7 @@ const App = () => {
           />
         )}
       />
+      <Text style={styles.text}>Ingressos Comprados</Text>
     </SafeAreaView>
   );
 };
@@ -77,6 +91,9 @@ const styles = StyleSheet.create({
   highlight: {
     fontWeight: '700',
   },
+  text: {
+    textAlign: 'center',
+  }
 });
 
 export default App;
