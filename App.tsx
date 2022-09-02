@@ -10,12 +10,17 @@
  * @format
  */
 
-import React, {useState, type PropsWithChildren} from 'react';
+import React, {
+  useContext,
+  createContext,
+  ReactNode,
+  useState,
+  type PropsWithChildren,
+} from 'react';
 import {
   ActivityIndicator,
   FlatList,
   SafeAreaView,
-  ScrollView,
   StatusBar,
   StyleSheet,
   Text,
@@ -24,7 +29,11 @@ import {
 } from 'react-native';
 
 import {Colors} from 'react-native/Libraries/NewAppScreen';
-import ConcertCard, {IConcertCard, IConcertCardSimulation, TicketSimulation} from './Components/ConcertCard';
+import ConcertCard, {
+  IConcertCard,
+  IConcertCardSimulation,
+  TicketSimulation,
+} from './Components/ConcertCard';
 
 const example: IConcertCard = {
   bandName: 'Nome da Banda',
@@ -42,34 +51,58 @@ const example2: IConcertCardSimulation = {
   ticket: {value: 20.01, type: 'Platinum', amount: 0},
 };
 
-const ticketSimulation: IConcertCardSimulation[] = [example2];
+const ticketSimulation: IConcertCardSimulation[] = [example2, example2];
+
+interface ContextProps {
+  children: ReactNode;
+}
+
+interface TicketsContext {
+  tickets: IConcertCardSimulation[];
+  setTickets: React.Dispatch<IConcertCardSimulation[]>;
+}
+
+const TicketsContext = createContext<TicketsContext>({} as TicketsContext);
+
+const TicketsProvider = ({children}: ContextProps) => {
+  const [tickets, setTickets] =
+    useState<IConcertCardSimulation[]>(ticketSimulation);
+
+  return (
+    <TicketsContext.Provider value={{tickets, setTickets}}>
+      {children}
+    </TicketsContext.Provider>
+  );
+};
 
 const App = () => {
   const isDarkMode = useColorScheme() === 'dark';
   const backgroundStyle = {
     backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
   };
-  const [list, setList] = useState([example, example, example]);
-
+  const [list, setList] = useState(ticketSimulation);
+  const {} = useContext(TicketsContext);
   return (
     <SafeAreaView style={backgroundStyle}>
-      <Text style={styles.text}>Ingressos Disponíveis</Text>
-      <FlatList
-        contentContainerStyle={{
-          alignItems: 'center',
-          width: '100%',
-          borderColor: 'blue',
-          borderWidth: 1,
-        }}
-        data={list}
-        renderItem={({item, index}) => (
-          <ConcertCard
-            {...item}
-            index={index === 0 || index === list.length - 1}
-          />
-        )}
-      />
-      <Text style={styles.text}>Ingressos Comprados</Text>
+      <TicketsProvider>
+        <Text style={styles.text}>Ingressos Disponíveis</Text>
+        <FlatList
+          contentContainerStyle={{
+            alignItems: 'center',
+            width: '100%',
+            borderColor: 'blue',
+            borderWidth: 1,
+          }}
+          data={list}
+          renderItem={({item, index}) => (
+            <ConcertCard
+              {...item}
+              index={index === 0 || index === list.length - 1}
+            />
+          )}
+        />
+        <Text style={styles.text}>Ingressos Comprados</Text>
+      </TicketsProvider>
     </SafeAreaView>
   );
 };
@@ -93,7 +126,7 @@ const styles = StyleSheet.create({
   },
   text: {
     textAlign: 'center',
-  }
+  },
 });
 
 export default App;
