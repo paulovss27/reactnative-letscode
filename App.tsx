@@ -28,22 +28,56 @@ import {
   LearnMoreLinks,
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
-import ConcertCard, {IConcertCard} from './Components/ConcertCard';
+import ClothingAd, {IClothingAd} from './Components/ClothingAd';
 
-const example: IConcertCard = {
-  bandName: 'Nome da Banda',
-  country: 'País',
-  city: 'Cidade',
-  date: new Date(),
-  ticket: {value: 20.01},
+const item1: IClothingAd = {
+  title: 'Camisa social',
+  type: 'Camisa',
+  color: 'white',
+  originalValue: 100,
+  currentValue: 80,
+  isDiscounted: true,
+  isInStock: true,
 };
+
+const item2: IClothingAd = {
+  title: 'Calça jeans',
+  type: 'Calça',
+  color: 'brown',
+  originalValue: 150,
+  currentValue: 125,
+  isDiscounted: true,
+  isInStock: true,
+};
+
+const item3: IClothingAd = {
+  title: 'All-star cano longo',
+  type: 'Calçado',
+  color: 'purple',
+  originalValue: 200,
+  currentValue: 190,
+  isDiscounted: true,
+  isInStock: false,
+};
+
+const item4: IClothingAd = {
+  title: 'Jaqueta Masculina Camurça ',
+  type: 'Jaqueta',
+  color: 'blue',
+  originalValue: 300,
+  currentValue: 300,
+  isDiscounted: false,
+  isInStock: true,
+};
+
+const items: IClothidAd[] = [item1, item2, item3, item4];
 
 const App = () => {
   const isDarkMode = useColorScheme() === 'dark';
   const backgroundStyle = {
     backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
   };
-  const [list, setList] = useState([example, example, example, example]);
+  const [list, setList] = useState(items);
 
   return (
     <SafeAreaView style={backgroundStyle}>
@@ -56,7 +90,7 @@ const App = () => {
         }}
         data={list}
         renderItem={({item, index}) => (
-          <ConcertCard
+          <ClothingAd
             {...item}
             index={index === 0 || index === list.length - 1}
           />
