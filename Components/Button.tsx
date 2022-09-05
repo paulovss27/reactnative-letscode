@@ -1,15 +1,21 @@
 /* eslint-disable react-native/no-inline-styles */
 import {View, Text, TouchableOpacity, StyleSheet} from 'react-native';
-import React from 'react';
+import React, { useContext } from 'react';
 import {Ticket} from './ConcertCard';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {faPlus, faMinus} from '@fortawesome/free-solid-svg-icons';
+import { TicketsContext } from '../App';
 
 interface Props {
   type: string;
+  position: number;
 }
 
 export default function Button({type}: Props) {
+
+  const {tickets, setTickets} = useContext(TicketsContext);
+
+
   return (
     <View
       style={{
@@ -21,7 +27,7 @@ export default function Button({type}: Props) {
         <FontAwesomeIcon icon={faMinus} size={10} />
       </TouchableOpacity>
       <Text style={[styles.text, {paddingHorizontal: 4}]}>{type}</Text>
-      <TouchableOpacity>
+      <TouchableOpacity >
         <View style={styles.container}>
           <FontAwesomeIcon icon={faPlus} size={10} />
         </View>

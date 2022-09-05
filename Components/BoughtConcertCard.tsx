@@ -1,22 +1,21 @@
 /* eslint-disable react-native/no-inline-styles */
-import { View, Text, StyleSheet } from 'react-native';
-import React, { useContext } from 'react';
+import {View, Text, StyleSheet} from 'react-native';
+import React from 'react';
 import Button from './Button';
-import { TicketsContext } from '../App';
 
 export type Ticket = {
   type: 'Standard' | 'Vip' | 'Platinum';
   value: number;
 };
 
-export type TicketSimulation = Ticket & { amount?: number };
+export type TicketSimulation = Ticket & {amount: number};
 
 export interface IConcertCard {
   bandName: string;
   country: string;
   city: string;
   date: Date;
-  ticket: Ticket | TicketSimulation;
+  ticket: Ticket;
 }
 
 export interface IConcertCardSimulation {
@@ -29,29 +28,26 @@ export interface IConcertCardSimulation {
 
 export interface ConcertCardProps extends IConcertCard {
   index: boolean;
-  position: number;
 }
 
-export default function ConcertCard({
+export default function BoughtConcertCard({
   bandName,
   country,
   city,
   date,
   ticket,
   index,
-  position
 }: ConcertCardProps) {
   const valores = [ticket.value, ticket.value * 1.5, ticket.value * 2];
   const strings = valores.map(value =>
     value.toFixed(2).toString().replace('.', ','),
   );
-  // const {tickets} = useContext(TicketsContext);
-  // console.log(tickets, 'dentro');
+  const valor = ticket.type === 'Standard' ? strings[0] : ticket.type === 'Vip' ? strings[1] : strings[2];
   return (
-    <View style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
+    <View style={{display: 'flex', flexDirection: 'row', alignItems: 'center'}}>
       <View style={styles(index).container}>
         <View style={styles(index).subContainer}>
-          <Text style={[styles(index).text, { color: '#1B263B' }]}>
+          <Text style={[styles(index).text, {color: '#1B263B'}]}>
             {bandName}
           </Text>
         </View>
@@ -62,18 +58,11 @@ export default function ConcertCard({
         <Text style={styles(index).text}>
           {date.toISOString().substring(0, 10).split('-').reverse().join('/')}
         </Text>
-        <View style={{ flexDirection: 'row', justifyContent: 'space-evenly' }}>
-          <Text style={[styles(index).text]}>R${' ' + strings[0]}</Text>
-          <Text>-</Text>
-          <Text style={styles(index).text}>R${' ' + strings[1]}</Text>
-          <Text>-</Text>
-          <Text style={styles(index).text}>R${' ' + strings[2]}</Text>
+        <View style={{flexDirection: 'row', justifyContent: 'space-evenly'}}>
+          <Text style={[styles(index).text]}>R${' ' + valor}</Text>
+          <Text style={styles(index).text}>-</Text>
+          <Text style={styles(index).text}>{ticket.type}</Text>
         </View>
-      </View>
-      <View style={{ marginTop: 20, marginLeft: 10 }}>
-        {['Standard', 'Vip', 'Platinum'].map(string => (
-          <Button type={string} position={position}/>
-        ))}
       </View>
     </View>
   );

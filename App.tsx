@@ -16,6 +16,7 @@ import React, {
   ReactNode,
   useState,
   type PropsWithChildren,
+  useEffect,
 } from 'react';
 import {
   ActivityIndicator,
@@ -27,7 +28,7 @@ import {
   useColorScheme,
   View,
 } from 'react-native';
-
+import BoughtConcertCard from './Components/BoughtConcertCard';
 import {Colors} from 'react-native/Libraries/NewAppScreen';
 import ConcertCard, {
   IConcertCard,
@@ -44,14 +45,25 @@ const example: IConcertCard = {
 };
 
 const example2: IConcertCardSimulation = {
-  bandName: 'Nome da Banda',
-  country: 'País',
-  city: 'Cidade',
+  bandName: 'A',
+  country: 'Brasil',
+  city: 'São Paulo',
+  date: new Date(),
+  ticket: {value: 10.55, type: 'Platinum', amount: 0},
+};
+
+const example22: IConcertCardSimulation = {
+  bandName: 'B',
+  country: 'Canadá',
+  city: 'Vancouver',
   date: new Date(),
   ticket: {value: 20.01, type: 'Platinum', amount: 0},
 };
 
-const ticketSimulation: IConcertCardSimulation[] = [example2, example2];
+const ticketSimulation: IConcertCardSimulation[] = [
+  {...example2},
+  {...example22},
+];
 
 interface ContextProps {
   children: ReactNode;
@@ -62,12 +74,23 @@ interface TicketsContext {
   setTickets: React.Dispatch<IConcertCardSimulation[]>;
 }
 
-const TicketsContext = createContext<TicketsContext>({} as TicketsContext);
+export const TicketsContext = createContext<TicketsContext>(
+  {} as TicketsContext,
+);
 
 const TicketsProvider = ({children}: ContextProps) => {
-  const [tickets, setTickets] =
-    useState<IConcertCardSimulation[]>(ticketSimulation);
+  const [tickets, setTickets] = useState<IConcertCardSimulation[]>([
+    example2,
+    example22,
+  ]);
 
+function addTicket(type: string, ticket: IConcertCardSimulation){
+setTickets(prev => [...prev, ticket]);
+}
+
+function removeTicket(type){
+
+}
   return (
     <TicketsContext.Provider value={{tickets, setTickets}}>
       {children}
@@ -75,17 +98,15 @@ const TicketsProvider = ({children}: ContextProps) => {
   );
 };
 
-const App = () => {
-  const isDarkMode = useColorScheme() === 'dark';
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
-  };
+function InnerApp() {
+
   const [list, setList] = useState(ticketSimulation);
-  const {} = useContext(TicketsContext);
+  const {tickets} = useContext(TicketsContext);
+  console.log('tickets',tickets);
+
   return (
-    <SafeAreaView style={backgroundStyle}>
-      <TicketsProvider>
-        <Text style={styles.text}>Ingressos Disponíveis</Text>
+    <>
+    <Text style={styles.text}>Ingressos Disponíveis</Text>
         <FlatList
           contentContainerStyle={{
             alignItems: 'center',
@@ -96,16 +117,54 @@ const App = () => {
           data={list}
           renderItem={({item, index}) => (
             <ConcertCard
+              key={String(Math.random())}
               {...item}
               index={index === 0 || index === list.length - 1}
+              position ={index}
             />
           )}
         />
         <Text style={styles.text}>Ingressos Comprados</Text>
+        <FlatList
+          contentContainerStyle={{
+            alignItems: 'center',
+            width: '100%',
+            borderColor: 'blue',
+            borderWidth: 1,
+          }}
+          data={tickets}
+          renderItem={({item, index}) => (
+            <BoughtConcertCard
+              key={String(Math.random())}
+              {...item}
+              index={index === 0 || index === tickets.length - 1}
+            />
+          )}
+        />
+        <Text>Preço Total</Text>
+        <Text>{'R$ ' + tickets.reduce( (prev, item) =>  {return prev + (item.ticket.type === 'Standard' ? item.ticket.value : item.ticket.type === 'Vip' ? 1.5 * item.ticket.value : 2 * item.ticket.value)},0).toFixed(2).toString().replace('.', ',')}</Text>
+        </>
+  );
+}
+
+
+
+const App = () => {
+  const isDarkMode = useColorScheme() === 'dark';
+  const backgroundStyle = {
+    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
+  };
+  return (
+    <SafeAreaView style={backgroundStyle}>
+      <TicketsProvider>
+        <InnerApp />
       </TicketsProvider>
     </SafeAreaView>
   );
 };
+
+
+
 
 const styles = StyleSheet.create({
   sectionContainer: {
