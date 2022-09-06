@@ -1,4 +1,4 @@
-import {View, Text, StyleSheet} from 'react-native';
+import {View, Text, StyleSheet, Dimensions} from 'react-native';
 import React from 'react';
 
 export interface IClothingAd {
@@ -11,7 +11,9 @@ export interface IClothingAd {
   isInStock: boolean;
 }
 
-export interface ClothingAdProps extends IClothingAd {}
+export interface ClothingAdProps extends IClothingAd {
+  numberCols: number;
+}
 
 export default function ClothingAd({
   title,
@@ -21,9 +23,16 @@ export default function ClothingAd({
   currentValue,
   isDiscounted,
   isInStock,
+  numberCols,
 }: ClothingAdProps) {
+  const {width} = Dimensions.get('window');
+  console.log(numberCols);
   return (
-    <View style={styles.container}>
+    <View
+      style={[
+        styles.container,
+        {width: (width * 0.7) / numberCols, margin: 0.01 * width},
+      ]}>
       <Text>{title}</Text>
       <Text>{type}</Text>
       <Text>{originalValue}</Text>
@@ -35,17 +44,16 @@ export default function ClothingAd({
 
 const styles = StyleSheet.create({
   container: {
-    width: 100,
+    width: 150,
     backgroundColor: 'white',
-    marginTop: 5,
-    marginBottom: 5,
-    marginHorizontal: 10,
-    borderRadius: 5,
     elevation: 5,
     shadowColor: '#52006A',
     display: 'flex',
     alignItems: 'center',
     padding: 0,
+    margin: 0,
+    borderColor: 'red',
+    borderWidth: 0,
   },
   subContainer: {
     borderColor: '#507DBC',

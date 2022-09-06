@@ -11,12 +11,15 @@
 
 import React, {useState, type PropsWithChildren} from 'react';
 import {
+  Dimensions,
   FlatList,
+  Image,
   SafeAreaView,
   ScrollView,
   StatusBar,
   StyleSheet,
   Text,
+  TouchableOpacity,
   useColorScheme,
   View,
 } from 'react-native';
@@ -78,23 +81,50 @@ const App = () => {
     backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
   };
   const [list, setList] = useState(items);
+  
+  const [numberCols, setNumberCols] = useState(1);
 
+  function handleNumberCols() {
+    if (numberCols === 1) {
+      setNumberCols(2);
+    } else {
+      setNumberCols(1);
+    }
+  }
   return (
     <SafeAreaView style={backgroundStyle}>
+      <TouchableOpacity onPress={handleNumberCols}>
+        <View style={{width: 150, borderWidth: 1}}>
+          <Text style={styles.text}>Change Number of Columns</Text>
+        </View>
+      </TouchableOpacity>
       <FlatList
         contentContainerStyle={{
           alignItems: 'center',
           width: '100%',
           borderColor: 'blue',
-          borderWidth: 1,
+          borderWidth: 3,
+          padding: 0,
         }}
         data={list}
+        numColumns={numberCols}
+        key={numberCols}
         renderItem={({item, index}) => (
           <ClothingAd
+            numberCols={numberCols}
             {...item}
             index={index === 0 || index === list.length - 1}
           />
         )}
+      />
+      <Image
+        onError={({nativeEvent: {error}}) => {
+          console.log(error);
+        }}
+        style={{height: 180, width: 300, resizeMode: 'contain'}}
+        source={{
+          uri: 'https://i.etsystatic.com/27269080/c/1500/1192/0/621/il/a1eba8/2850437611/il_680x540.2850437611_xhdo.jpg',
+        }}
       />
     </SafeAreaView>
   );
@@ -117,6 +147,11 @@ const styles = StyleSheet.create({
   highlight: {
     fontWeight: '700',
   },
+  text: {
+    color: '#083D77',
+    fontFamily: 'sans-serif-condensed',
+    textAlign: 'center',
+  }
 });
 
 export default App;
