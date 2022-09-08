@@ -41,6 +41,7 @@ const item1: IClothingAd = {
   currentValue: 80,
   isDiscounted: true,
   isInStock: true,
+  image: require('./resources/camisa_social_branca.jpg'),
 };
 
 const item2: IClothingAd = {
@@ -51,6 +52,7 @@ const item2: IClothingAd = {
   currentValue: 125,
   isDiscounted: true,
   isInStock: true,
+  image: require('./resources/calca_jeans_marrom.jpg'),
 };
 
 const item3: IClothingAd = {
@@ -61,19 +63,23 @@ const item3: IClothingAd = {
   currentValue: 190,
   isDiscounted: true,
   isInStock: false,
+  image: require('./resources/all_start_cano_longo.jpg'),
 };
 
+var yourPicture = require('./resources/jaqueta_denim_blue.jpg');
+
 const item4: IClothingAd = {
-  title: 'Jaqueta Masculina Camurça ',
+  title: 'Jaqueta Masculina Denim ',
   type: 'Jaqueta',
   color: 'blue',
   originalValue: 300,
   currentValue: 300,
   isDiscounted: false,
   isInStock: true,
+  image: require('./resources/jaqueta_denim_blue.jpg'),
 };
 
-const items: IClothidAd[] = [item1, item2, item3, item4];
+const items: IClothingAd[] = [item1, item2, item4, item3];
 
 const App = () => {
   const isDarkMode = useColorScheme() === 'dark';
@@ -81,7 +87,6 @@ const App = () => {
     backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
   };
   const [list, setList] = useState(items);
-  
   const [numberCols, setNumberCols] = useState(1);
 
   function handleNumberCols() {
@@ -94,17 +99,27 @@ const App = () => {
   return (
     <SafeAreaView style={backgroundStyle}>
       <TouchableOpacity onPress={handleNumberCols}>
-        <View style={{width: 150, borderWidth: 1}}>
+        <View
+          style={{
+            margin: 5,
+            alignSelf: 'center',
+            width: '72%',
+            borderWidth: 4,
+            backgroundColor: 'black',
+            borderColor: '#C9D6DF',
+            borderRadius: 50,
+            padding: 1,
+          }}>
           <Text style={styles.text}>Change Number of Columns</Text>
         </View>
       </TouchableOpacity>
       <FlatList
         contentContainerStyle={{
+          alignSelf: 'center',
           alignItems: 'center',
-          width: '100%',
-          borderColor: 'blue',
+          width: '90%',
+          borderColor: 'pink',
           borderWidth: 3,
-          padding: 0,
         }}
         data={list}
         numColumns={numberCols}
@@ -116,15 +131,6 @@ const App = () => {
             index={index === 0 || index === list.length - 1}
           />
         )}
-      />
-      <Image
-        onError={({nativeEvent: {error}}) => {
-          console.log(error);
-        }}
-        style={{height: 180, width: 300, resizeMode: 'contain'}}
-        source={{
-          uri: 'https://i.etsystatic.com/27269080/c/1500/1192/0/621/il/a1eba8/2850437611/il_680x540.2850437611_xhdo.jpg',
-        }}
       />
     </SafeAreaView>
   );
@@ -148,10 +154,11 @@ const styles = StyleSheet.create({
     fontWeight: '700',
   },
   text: {
-    color: '#083D77',
+    color: '#F0F5F9',
     fontFamily: 'sans-serif-condensed',
     textAlign: 'center',
-  }
+    fontSize: 22,
+  },
 });
 
 export default App;

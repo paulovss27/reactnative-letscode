@@ -1,4 +1,5 @@
-import {View, Text, StyleSheet, Dimensions} from 'react-native';
+/* eslint-disable react-native/no-inline-styles */
+import {View, Text, StyleSheet, Dimensions, Image} from 'react-native';
 import React from 'react';
 
 export interface IClothingAd {
@@ -9,6 +10,7 @@ export interface IClothingAd {
   currentValue: number;
   isDiscounted: boolean;
   isInStock: boolean;
+  image: any;
 }
 
 export interface ClothingAdProps extends IClothingAd {
@@ -24,6 +26,7 @@ export default function ClothingAd({
   isDiscounted,
   isInStock,
   numberCols,
+  image,
 }: ClothingAdProps) {
   const {width} = Dimensions.get('window');
   console.log(numberCols);
@@ -33,11 +36,35 @@ export default function ClothingAd({
         styles.container,
         {width: (width * 0.7) / numberCols, margin: 0.01 * width},
       ]}>
-      <Text>{title}</Text>
-      <Text>{type}</Text>
-      <Text>{originalValue}</Text>
-      <Text>{currentValue}</Text>
-      <Text>{type}</Text>
+      <View
+        style={{
+          margin: 5,
+          marginTop: 12,
+          height: 150,
+          width: '90%',
+          backgroundColor: 'white',
+          elevation: 2,
+          borderRadius: 4,
+        }}>
+        <Image
+          onError={({nativeEvent: {error}}) => {
+            console.log(error);
+          }}
+          style={{
+            height: undefined,
+            width: undefined,
+            resizeMode: 'center',
+            flex: 1,
+          }}
+          source={image}
+        />
+      </View>
+      <Text style={styles.text}>{title}</Text>
+      <Text style={styles.text}>{type}</Text>
+      <Text style={styles.text}>R${originalValue}</Text>
+      <Text style={styles.text}>R${currentValue}</Text>
+      <Text style={styles.text}>{type}</Text>
+      <Text style={styles.text}>{color}</Text>
     </View>
   );
 }
@@ -48,10 +75,9 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     elevation: 5,
     shadowColor: '#52006A',
-    display: 'flex',
     alignItems: 'center',
     padding: 0,
-    margin: 0,
+    margin: 50,
     borderColor: 'red',
     borderWidth: 0,
   },
