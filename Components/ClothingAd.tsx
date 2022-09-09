@@ -34,7 +34,11 @@ export default function ClothingAd({
     <View
       style={[
         styles.container,
-        {width: (width * 0.7) / numberCols, margin: 0.01 * width},
+        {
+          width: (width * 0.7) / numberCols,
+          margin: 0.01 * width,
+          opacity: !isInStock ? 0.2 : 1,
+        },
       ]}>
       <View
         style={{
@@ -61,8 +65,19 @@ export default function ClothingAd({
       </View>
       <Text style={styles.text}>{title}</Text>
       <Text style={styles.text}>{type}</Text>
-      <Text style={styles.text}>R${originalValue}</Text>
-      <Text style={styles.text}>R${currentValue}</Text>
+      {isDiscounted ? (
+        <View style={{flexDirection: 'row'}}>
+          <Text style={[styles.text, {textDecorationLine: 'line-through'}]}>
+            R${originalValue}
+          </Text>
+          <Text style={styles.text}>{' ➜ R$' + currentValue}</Text>
+        </View>
+      ) : (
+        <>
+          <Text style={styles.text}>R${originalValue}</Text>
+        </>
+      )}
+
       <Text style={styles.text}>{type}</Text>
       <Text style={styles.text}>{color}</Text>
     </View>

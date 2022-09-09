@@ -24,6 +24,8 @@ import {
   View,
 } from 'react-native';
 
+import {SafeAreaProvider} from 'react-native-safe-area-context';
+
 import {
   Colors,
   DebugInstructions,
@@ -88,7 +90,7 @@ const App = () => {
   };
   const [list, setList] = useState(items);
   const [numberCols, setNumberCols] = useState(1);
-
+  console.log(Dimensions.get('window').height)
   function handleNumberCols() {
     if (numberCols === 1) {
       setNumberCols(2);
@@ -97,7 +99,7 @@ const App = () => {
     }
   }
   return (
-    <SafeAreaView style={backgroundStyle}>
+    <SafeAreaView style={{paddingBottom: 99.8}}>
       <TouchableOpacity onPress={handleNumberCols}>
         <View
           style={{
@@ -113,25 +115,27 @@ const App = () => {
           <Text style={styles.text}>Change Number of Columns</Text>
         </View>
       </TouchableOpacity>
-      <FlatList
-        contentContainerStyle={{
-          alignSelf: 'center',
-          alignItems: 'center',
-          width: '90%',
-          borderColor: 'pink',
-          borderWidth: 3,
-        }}
-        data={list}
-        numColumns={numberCols}
-        key={numberCols}
-        renderItem={({item, index}) => (
-          <ClothingAd
-            numberCols={numberCols}
-            {...item}
-            index={index === 0 || index === list.length - 1}
-          />
-        )}
-      />
+      <View style={{borderColor: 'black', borderWidth: 4}}>
+        <FlatList
+          contentContainerStyle={{
+            alignSelf: 'center',
+            alignItems: 'center',
+            width: '90%',
+            // borderColor: 'pink',
+            // borderWidth: 3,
+          }}
+          data={list}
+          numColumns={numberCols}
+          key={numberCols}
+          renderItem={({item, index}) => (
+            <ClothingAd
+              numberCols={numberCols}
+              {...item}
+              index={index === 0 || index === list.length - 1}
+            />
+          )}
+        />
+      </View>
     </SafeAreaView>
   );
 };
