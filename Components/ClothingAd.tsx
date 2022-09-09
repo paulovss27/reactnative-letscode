@@ -60,7 +60,7 @@ export default function ClothingAd({
             width: undefined,
             resizeMode: 'center',
             flex: 1,
-            opacity: isInStock ? 1 : 0.1,
+            opacity: isInStock ? 1 : 0.2,
           }}
           source={image}
         />

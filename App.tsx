@@ -90,7 +90,7 @@ const App = () => {
   };
   const [list, setList] = useState(items);
   const [numberCols, setNumberCols] = useState(1);
-  console.log(Dimensions.get('window').height)
+  console.log(Dimensions.get('window').height);
   function handleNumberCols() {
     if (numberCols === 1) {
       setNumberCols(2);
@@ -99,19 +99,33 @@ const App = () => {
     }
   }
   return (
-    <SafeAreaView style={{paddingBottom: 99.8}}>
-      <TouchableOpacity onPress={handleNumberCols}>
+    <SafeAreaView style={{paddingBottom: 199.8}}>
+      <View
+        style={{
+          flexDirection: 'row',
+          borderWidth: 2,
+          alignContent: 'center',
+          justifyContent: 'space-around',
+        }}>
         <View
           style={{
-            margin: 5,
-            alignSelf: 'center',
-            width: '72%',
-            borderWidth: 4,
-            backgroundColor: 'black',
-            borderColor: '#C9D6DF',
-            borderRadius: 50,
-            padding: 1,
+            width: '25%',
+            height: '100%',
+            flexDirection: 'row',
+            paddingTop: 5,
           }}>
+          <Text style={{color: '#333'}}>{'Swap '}</Text>
+          <Text style={{color: '#13b6a0'}}>Vest</Text>
+        </View>
+
+        <TouchableOpacity>
+          <View style={[styles.buttonView, {width: 100, margin: 0}]}>
+            <Text style={[styles.text, {fontSize: 15}]}>Fazer Login</Text>
+          </View>
+        </TouchableOpacity>
+      </View>
+      <TouchableOpacity onPress={handleNumberCols}>
+        <View style={styles.buttonView}>
           <Text style={styles.text}>Change Number of Columns</Text>
         </View>
       </TouchableOpacity>
@@ -162,6 +176,16 @@ const styles = StyleSheet.create({
     fontFamily: 'sans-serif-condensed',
     textAlign: 'center',
     fontSize: 22,
+  },
+  buttonView: {
+    margin: 5,
+    alignSelf: 'center',
+    width: '72%',
+    borderWidth: 4,
+    backgroundColor: 'black',
+    borderColor: '#C9D6DF',
+    borderRadius: 50,
+    padding: 1,
   },
 });
 
