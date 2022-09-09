@@ -37,7 +37,8 @@ export default function ClothingAd({
         {
           width: (width * 0.7) / numberCols,
           margin: 0.01 * width,
-          opacity: !isInStock ? 0.2 : 1,
+          opacity: !isInStock ? 0.5 : 1,
+          backgroundColor: isDiscounted ? 'lightblue' : 'white',
         },
       ]}>
       <View
@@ -46,8 +47,8 @@ export default function ClothingAd({
           marginTop: 12,
           height: 150,
           width: '90%',
-          backgroundColor: 'white',
-          elevation: 2,
+          backgroundColor: '#ffffff',
+          elevation: isInStock ? 2 : 0,
           borderRadius: 4,
         }}>
         <Image
@@ -59,11 +60,12 @@ export default function ClothingAd({
             width: undefined,
             resizeMode: 'center',
             flex: 1,
+            opacity: isInStock ? 1 : 0.1,
           }}
           source={image}
         />
       </View>
-      <Text style={styles.text}>{title}</Text>
+      <Text style={[styles.text, {textTransform: 'capitalize'}]}>{title}</Text>
       <Text style={styles.text}>{type}</Text>
       {isDiscounted ? (
         <View style={{flexDirection: 'row'}}>
