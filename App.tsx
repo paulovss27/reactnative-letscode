@@ -23,6 +23,7 @@ import {
   useColorScheme,
   View,
 } from 'react-native';
+import DropDownPicker from 'react-native-dropdown-picker';
 
 import {SafeAreaProvider} from 'react-native-safe-area-context';
 
@@ -88,11 +89,9 @@ const item4: IClothingAd = {
 const items: IClothingAd[] = [item1, item2, item4, item3];
 
 const App = () => {
-  const isDarkMode = useColorScheme() === 'dark';
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
-  };
   const [list, setList] = useState(items);
+  const [filteredList, setfilteredList] = useState(list);
+
   const [numberCols, setNumberCols] = useState(1);
   console.log(Dimensions.get('window').height);
   function handleNumberCols() {
@@ -104,9 +103,24 @@ const App = () => {
   }
 
   function changeBookmark(index: number) {
-    let current = list;
+    let current = filteredList;
     current[index].isFavorite = !current[index].isFavorite;
-    setList(_prev => [...current]);
+    setfilteredList(_prev => [...current]);
+  }
+
+  const [open, setOpen] = useState(false);
+  const [value, setValue] = useState<string[]>([]);
+  const [itemsSelect, setItemsSelect] = useState([
+    {label: 'Camisa', value: 'Camisa'},
+    {label: 'Calça', value: 'Calça'},
+    {label: 'Jaqueta', value: 'Jaqueta'},
+    {label: 'Calçado', value: 'Calçado'},
+  ]);
+
+  function handleSelect() {
+    let filter = list.filter(item => value.includes(item.type));
+    console.log(filter.length);
+    setfilteredList(_prev => filter);
   }
 
   return (
@@ -114,9 +128,10 @@ const App = () => {
       <View
         style={{
           flexDirection: 'row',
-          borderWidth: 2,
+          borderWidth: 0,
           alignContent: 'center',
           justifyContent: 'space-around',
+          paddingTop: 15,
         }}>
         <View
           style={{
@@ -135,33 +150,58 @@ const App = () => {
           </View>
         </TouchableOpacity>
       </View>
-      <TouchableOpacity onPress={handleNumberCols}>
-        <View style={styles.buttonView}>
-          <Text style={styles.text}>Change Number of Columns</Text>
-        </View>
-      </TouchableOpacity>
-      <View style={{borderColor: 'black', borderWidth: 4}}>
-        <FlatList
-          contentContainerStyle={{
-            alignSelf: 'center',
-            alignItems: 'center',
-            width: '90%',
-            // borderColor: 'pink',
-            // borderWidth: 3,
-          }}
-          data={list}
-          numColumns={numberCols}
-          key={numberCols}
-          renderItem={({item, index}) => (
-            <ClothingAd
-              numberCols={numberCols}
-              {...item}
-              setList={setList}
-              changeBookmark={() => changeBookmark(index)}
-            />
-          )}
+      <View
+        style={{
+          elevation: 100,
+          width: '60%',
+          alignSelf: 'center',
+          minHeight: 100,
+        }}>
+        <DropDownPicker
+          multiple
+          placeholder="Selecione uma categoria"
+          open={open}
+          value={value}
+          items={itemsSelect}
+          setOpen={setOpen}
+          setValue={setValue}
+          onChangeValue={handleSelect}
+          setItems={setItemsSelect}
+          containerStyle={{elevation: 150}}
+          zIndex={1000}
         />
       </View>
+      {open || (
+        <>
+          <TouchableOpacity onPress={handleNumberCols}>
+            <View style={styles.buttonView}>
+              <Text style={styles.text}>Change Number of Columns</Text>
+            </View>
+          </TouchableOpacity>
+          <View style={{borderColor: 'black', borderWidth: 0}}>
+            <FlatList
+              contentContainerStyle={{
+                alignSelf: 'center',
+                alignItems: 'center',
+                width: '90%',
+                // borderColor: 'pink',
+                // borderWidth: 3,
+              }}
+              data={filteredList}
+              numColumns={numberCols}
+              key={numberCols}
+              renderItem={({item, index}) => (
+                <ClothingAd
+                  numberCols={numberCols}
+                  {...item}
+                  setList={setList}
+                  changeBookmark={() => changeBookmark(index)}
+                />
+              )}
+            />
+          </View>
+        </>
+      )}
     </SafeAreaView>
   );
 };
