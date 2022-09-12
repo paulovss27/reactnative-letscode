@@ -1,6 +1,7 @@
 /* eslint-disable react-native/no-inline-styles */
-import {View, Text, StyleSheet, Dimensions, Image} from 'react-native';
-import React from 'react';
+import {View, Text, StyleSheet, Dimensions, Image, TouchableOpacity} from 'react-native';
+import React, { Dispatch } from 'react';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 export interface IClothingAd {
   title: string;
@@ -11,10 +12,13 @@ export interface IClothingAd {
   isDiscounted: boolean;
   isInStock: boolean;
   image: any;
+  isFavorite: boolean;
 }
 
 export interface ClothingAdProps extends IClothingAd {
   numberCols: number;
+  setList: Dispatch<IClothingAd[]>;
+  changeBookmark: () => void;
 }
 
 export default function ClothingAd({
@@ -27,6 +31,9 @@ export default function ClothingAd({
   isInStock,
   numberCols,
   image,
+  isFavorite,
+  setList,
+  changeBookmark,
 }: ClothingAdProps) {
   const {width} = Dimensions.get('window');
   console.log(numberCols);
@@ -38,9 +45,16 @@ export default function ClothingAd({
           width: (width * 0.7) / numberCols,
           margin: 0.01 * width,
           opacity: !isInStock ? 0.5 : 1,
-          backgroundColor: isDiscounted ? 'lightblue' : 'white',
+          backgroundColor: !isFavorite
+            ? isDiscounted
+              ? 'lightblue'
+              : 'white'
+            : '#f15bb5',
         },
       ]}>
+      <TouchableOpacity style={styles.bookmark} onPress={changeBookmark}>
+        <Icon size={30} color="#1c598a" name="bookmark" />
+      </TouchableOpacity>
       <View
         style={{
           margin: 5,
@@ -111,5 +125,11 @@ const styles = StyleSheet.create({
     color: '#083D77',
     fontFamily: 'sans-serif-condensed',
     textAlign: 'center',
+  },
+  bookmark: {
+    position: 'absolute',
+    zIndex: 2,
+    right: 3.5,
+    top: 5,
   },
 });

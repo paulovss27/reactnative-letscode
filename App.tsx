@@ -44,6 +44,7 @@ const item1: IClothingAd = {
   isDiscounted: true,
   isInStock: true,
   image: require('./resources/camisa_social_branca.jpg'),
+  isFavorite: false,
 };
 
 const item2: IClothingAd = {
@@ -55,6 +56,7 @@ const item2: IClothingAd = {
   isDiscounted: true,
   isInStock: true,
   image: require('./resources/calca_jeans_marrom.jpg'),
+  isFavorite: false,
 };
 
 const item3: IClothingAd = {
@@ -66,6 +68,7 @@ const item3: IClothingAd = {
   isDiscounted: true,
   isInStock: false,
   image: require('./resources/all_start_cano_longo.jpg'),
+  isFavorite: false,
 };
 
 var yourPicture = require('./resources/jaqueta_denim_blue.jpg');
@@ -79,6 +82,7 @@ const item4: IClothingAd = {
   isDiscounted: false,
   isInStock: true,
   image: require('./resources/jaqueta_denim_blue.jpg'),
+  isFavorite: false,
 };
 
 const items: IClothingAd[] = [item1, item2, item4, item3];
@@ -98,6 +102,13 @@ const App = () => {
       setNumberCols(1);
     }
   }
+
+  function changeBookmark(index: number) {
+    let current = list;
+    current[index].isFavorite = !current[index].isFavorite;
+    setList(_prev => [...current]);
+  }
+
   return (
     <SafeAreaView style={{paddingBottom: 199.8}}>
       <View
@@ -145,7 +156,8 @@ const App = () => {
             <ClothingAd
               numberCols={numberCols}
               {...item}
-              index={index === 0 || index === list.length - 1}
+              setList={setList}
+              changeBookmark={() => changeBookmark(index)}
             />
           )}
         />
