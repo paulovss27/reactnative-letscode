@@ -1,6 +1,6 @@
 /* eslint-disable react-native/no-inline-styles */
 import {View, Text, StyleSheet, Dimensions, Image, TouchableOpacity} from 'react-native';
-import React, { Dispatch } from 'react';
+import React, {Dispatch} from 'react';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 export interface IClothingAd {
